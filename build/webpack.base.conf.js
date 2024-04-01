@@ -37,6 +37,11 @@ module.exports = {
     rules: [
       { test: /\.js$/, loader: 'babel-loader', exclude: '/node_modules/' },
       {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file-loader',
+        options: { name: '[name].[ext]' },
+      },
+      {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
         options: { name: '[name].[ext]' },
@@ -57,7 +62,7 @@ module.exports = {
             options: {
               sourceMap: true,
               postcssOptions: {
-                config: 'postcss.config.js', //`${PATHS.src}/js/postcss.config.js`
+                config: 'postcss.config.js',
               },
             },
           },
@@ -80,7 +85,7 @@ module.exports = {
             options: {
               sourceMap: true,
               postcssOptions: {
-                config: 'postcss.config.js', //`${PATHS.src}/js/postcss.config.js`
+                config: 'postcss.config.js',
               },
             },
           },
@@ -88,6 +93,7 @@ module.exports = {
       },
     ],
   },
+  resolve: { alias: { '~': 'src' } },
   plugins: [
     new MiniCssExtractPlugin({
       filename: `${PATHS.assets}css/[name].[hash].css`,
@@ -101,8 +107,13 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: `${PATHS.src}/img`,
+          from: `${PATHS.src}/${PATHS.assets}/img`,
           to: `${PATHS.assets}img`,
+          noErrorOnMissing: true,
+        },
+        {
+          from: `${PATHS.src}/${PATHS.assets}/fonts`,
+          to: `${PATHS.assets}fonts`,
           noErrorOnMissing: true,
         },
         {
